@@ -81,6 +81,10 @@
 #define MXU1_1151_PRODUCT_ID			0x1151
 #define MXU1_1131_PRODUCT_ID			0x1131
 
+/* Ramses vendor and product ids */
+#define RAMSES_VENDOR_ID               0x10ac
+#define RAMSES_PRODUCT_ID              0x0102
+
 /* Commands */
 #define TI_GET_VERSION			0x01
 #define TI_GET_PORT_STATUS		0x02
@@ -378,6 +382,7 @@ static const struct usb_device_id ti_id_table_3410[] = {
 	{ USB_DEVICE(MXU1_VENDOR_ID, MXU1_1131_PRODUCT_ID) },
 	{ USB_DEVICE(MXU1_VENDOR_ID, MXU1_1150_PRODUCT_ID) },
 	{ USB_DEVICE(MXU1_VENDOR_ID, MXU1_1151_PRODUCT_ID) },
+	{ USB_DEVICE(RAMSES_VENDOR_ID, RAMSES_PRODUCT_ID) },
 	{ }	/* terminator */
 };
 
@@ -416,6 +421,7 @@ static const struct usb_device_id ti_id_table_combined[] = {
 	{ USB_DEVICE(MXU1_VENDOR_ID, MXU1_1131_PRODUCT_ID) },
 	{ USB_DEVICE(MXU1_VENDOR_ID, MXU1_1150_PRODUCT_ID) },
 	{ USB_DEVICE(MXU1_VENDOR_ID, MXU1_1151_PRODUCT_ID) },
+	{ USB_DEVICE(RAMSES_VENDOR_ID, RAMSES_PRODUCT_ID) },
 	{ }	/* terminator */
 };
 
