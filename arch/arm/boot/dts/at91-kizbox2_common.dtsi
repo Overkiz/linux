@@ -180,6 +180,11 @@
 				};
 			};
 		};
+
+		kboot: kboot@fffffd50 {
+			compatible = "overkiz,at91-kboot";
+			reg = <0xfffffe60 0x4>;
+		};
 	};
 
 	gpio_keys {
