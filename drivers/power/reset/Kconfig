@@ -30,6 +30,13 @@ config POWER_RESET_AT91_RESET
 	  This driver supports restart for Atmel AT91SAM9 and SAMA5
 	  SoCs
 
+config POWER_RESET_AT91_RESET_SYSFS
+	bool "SYSFS Interface"
+	depends on SYSFS && POWER_RESET_AT91_RESET
+	help
+	  Say Y here to add a SYSFS interface for AT91 Reset Controller.
+	  /sys/class/reset/... (sysfs interface)
+
 config POWER_RESET_AT91_SAMA5D2_SHDWC
 	tristate "Atmel AT91 SAMA5D2-Compatible shutdown controller driver"
 	depends on ARCH_AT91

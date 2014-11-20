@@ -17,6 +17,9 @@
 #include <linux/of_address.h>
 #include <linux/platform_device.h>
 #include <linux/reboot.h>
+#ifdef POWER_RESET_AT91_RESET_SYSFS
+#include <linux/sysfs.h>
+#endif
 
 #include <soc/at91/at91sam9_ddrsdr.h>
 #include <soc/at91/at91sam9_sdramc.h>
@@ -143,7 +146,11 @@ static int samx7_restart(struct notifier_block *this, unsigned long mode,
 	return NOTIFY_DONE;
 }
 
-static void __init at91_reset_status(struct platform_device *pdev)
+static const char *
+#ifndef CONFIG_POWER_RESET_AT91_RESET_SYSFS
+__init
+#endif
+at91_reset_status(struct platform_device *pdev)
 {
 	u32 reg = readl(at91_rstc_base + AT91_RSTC_SR);
 	char *reason;
@@ -170,6 +177,7 @@ static void __init at91_reset_status(struct platform_device *pdev)
 	}
 
 	pr_info("AT91: Starting after %s\n", reason);
+	return reason;
 }
 
 static const struct of_device_id at91_ramc_of_match[] = {
@@ -190,6 +198,32 @@ MODULE_DEVICE_TABLE(of, at91_reset_of_match);
 static struct notifier_block at91_restart_nb = {
 	.priority = 192,
 };
+
+#ifdef CONFIG_POWER_RESET_AT91_RESET_SYSFS
+static struct kobject *reset;
+
+static ssize_t reason_show(struct device *dev, struct device_attribute *attr,
+                          char *buf)
+{
+	ssize_t ret;
+	struct platform_device *pdev = to_platform_device(dev);
+	const char * reason = at91_reset_status(pdev);
+	ret = snprintf(buf, PAGE_SIZE, "%s\n", reason);
+
+	return ret;
+}
+
+static struct device_attribute reason = __ATTR_RO(reason);
+
+static struct attribute *reset_attributes[] = {
+	&reason.attr,
+	NULL,
+};
+
+static struct attribute_group reset_group = {
+	.attrs = reset_attributes,
+};
+#endif /* CONFIG_POWER_RESET_AT91_RESET_SYSFS */
 
 static int __init at91_reset_probe(struct platform_device *pdev)
 {
@@ -235,7 +269,20 @@ static int __init at91_reset_probe(struct platform_device *pdev)
 		return ret;
 	}
 
-	at91_reset_status(pdev);
+	pr_info("AT91: Starting after %s\n", at91_reset_status(pdev));
+
+#ifdef CONFIG_POWER_RESET_AT91_RESET_SYSFS
+	reset = kobject_create_and_add("reset", NULL);
+	if (!reset)
+		return -ENOMEM;
+
+	ret = sysfs_create_group(reset, &reset_group);
+
+	if (ret) {
+		kobject_del(reset);
+		return ret;
+	}
+#endif /* CONFIG_POWER_RESET_AT91_RESET_SYSFS */
 
 	return 0;
 }
@@ -244,7 +291,9 @@ static int __exit at91_reset_remove(struct platform_device *pdev)
 {
 	unregister_restart_handler(&at91_restart_nb);
 	clk_disable_unprepare(sclk);
-
+#ifdef CONFIG_POWER_RESET_AT91_RESET_SYSFS
+	kobject_del(reset);
+#endif /* CONFIG_POWER_RESET_AT91_RESET_SYSFS */
 	return 0;
 }
 
