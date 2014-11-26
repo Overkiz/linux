@@ -516,6 +516,15 @@ config PCI_ENDPOINT_TEST
            Enable this configuration option to enable the host side test driver
            for PCI Endpoint.
 
+config AT91_KBOOT
+	bool "KBoot SYSFS Interface implementation for AT91"
+	depends on OF
+	help
+	  Say Y if you have K-Boot and you want to communicate the boot mode.
+	  AT91 implementation uses a GPBR register to save the boot mode.
+
+	  If unsure, say N.
+
 source "drivers/misc/c2port/Kconfig"
 source "drivers/misc/eeprom/Kconfig"
 source "drivers/misc/cb710/Kconfig"
