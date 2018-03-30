@@ -84,6 +84,16 @@ config ATMEL_TCB_CLKSRC_BLOCK
 	  TC can be used for other purposes, such as PWM generation and
 	  interval timing.
 
+config ATMEL_TCB_CLKEV_DIV
+	int
+	depends on ATMEL_TCB_CLKSRC
+	prompt "TC Clock event device divisor"
+	default 0
+	range 0 128
+	help
+	  Define the clock divisor used by the clock event device. 0 means 32KHz
+	  clock without divisor.
+
 config DUMMY_IRQ
 	tristate "Dummy IRQ handler"
 	default n

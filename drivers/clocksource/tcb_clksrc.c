@@ -142,6 +142,7 @@ static struct tc_clkevt_device *to_tc_clkevt(struct clock_event_device *clkevt)
  * 30.5 usec resolution can seem "low".
  */
 static u32 timer_clock;
+static u32 timer_rate;
 
 static int tc_shutdown(struct clock_event_device *d)
 {
@@ -167,6 +168,7 @@ static int tc_set_oneshot(struct clock_event_device *d)
 	clk_enable(tcd->clk);
 
 	/* slow clock, count up to RC, then irq and stop */
+	/* count up to RC, then irq and restart */
 	writel(timer_clock | ATMEL_TC_CPCSTOP | ATMEL_TC_WAVE |
 		     ATMEL_TC_WAVESEL_UP_AUTO, regs + ATMEL_TC_REG(2, CMR));
 	writel(ATMEL_TC_CPCS, regs + ATMEL_TC_REG(2, IER));
@@ -189,6 +191,7 @@ static int tc_set_periodic(struct clock_event_device *d)
 	clk_enable(tcd->clk);
 
 	/* slow clock, count up to RC, then irq and restart */
+	/* count up to RC, then irq and stop */
 	writel(timer_clock | ATMEL_TC_WAVE | ATMEL_TC_WAVESEL_UP_AUTO,
 		     regs + ATMEL_TC_REG(2, CMR));
 	writel((32768 + HZ / 2) / HZ, tcaddr + ATMEL_TC_REG(2, RC));
@@ -240,7 +243,7 @@ static irqreturn_t ch2_irq(int irq, void *handle)
 	return IRQ_NONE;
 }
 
-static int __init setup_clkevents(struct atmel_tc *tc, int clk32k_divisor_idx)
+static int __init setup_clkevents(struct atmel_tc *tc, u32 rate, int clk32k_divisor_idx)
 {
 	int ret;
 	struct clk *t2_clk = tc->clk[2];
@@ -263,6 +266,10 @@ static int __init setup_clkevents(struct atmel_tc *tc, int clk32k_divisor_idx)
 	clkevt.clk = t2_clk;
 
 	timer_clock = clk32k_divisor_idx;
+	if (atmel_tc_divisors[timer_clock] != 0)
+		timer_rate = rate / atmel_tc_divisors[timer_clock];
+	else
+		timer_rate = 32768;
 
 	clkevt.clkevt.cpumask = cpumask_of(0);
 
@@ -273,14 +280,14 @@ static int __init setup_clkevents(struct atmel_tc *tc, int clk32k_divisor_idx)
 		return ret;
 	}
 
-	clockevents_config_and_register(&clkevt.clkevt, 32768, 1, 0xffff);
+	clockevents_config_and_register(&clkevt.clkevt, timer_rate, 1, 0xffff);
 
 	return ret;
 }
 
 #else /* !CONFIG_GENERIC_CLOCKEVENTS */
 
-static int __init setup_clkevents(struct atmel_tc *tc, int clk32k_divisor_idx)
+static int __init setup_clkevents(struct atmel_tc *tc, u32 rate, int clk32k_divisor_idx)
 {
 	/* NOTHING */
 	return 0;
@@ -340,7 +347,7 @@ static int __init tcb_clksrc_init(void)
 	struct clk *t0_clk;
 	u32 rate, divided_rate = 0;
 	int best_divisor_idx = -1;
-	int clk32k_divisor_idx = -1;
+	int clkev_divisor_idx = -1;
 	int i;
 	int ret;
 
@@ -365,9 +372,12 @@ static int __init tcb_clksrc_init(void)
 		unsigned divisor = atmel_tc_divisors[i];
 		unsigned tmp;
 
+		if (divisor == CONFIG_ATMEL_TCB_CLKEV_DIV)
+			clkev_divisor_idx = i;
+
 		/* remember 32 KiHz clock for later */
 		if (!divisor) {
-			clk32k_divisor_idx = i;
+			clkev_divisor_idx = i;
 			continue;
 		}
 
@@ -410,7 +420,7 @@ static int __init tcb_clksrc_init(void)
 		goto err_disable_t1;
 
 	/* channel 2:  periodic and oneshot timer support */
-	ret = setup_clkevents(tc, clk32k_divisor_idx);
+	ret = setup_clkevents(tc, rate, clkev_divisor_idx);
 	if (ret)
 		goto err_unregister_clksrc;
 
