@@ -1,0 +1,58 @@
+// SPDX-License-Identifier: GPL-2.0
+/*
+ * Copyright (C) 2015-2018 Overkiz SAS
+ *   Author: Mickael Gardet <m.gardet@overkiz.com>
+ *           Kévin Raymond <k.raymond@overkiz.com>
+ */
+/dts-v1/;
+#include "at91-kizboxmini_common.dtsi"
+
+/ {
+	model = "Overkiz Kizbox Mini RailDIN";
+	compatible = "overkiz,kizboxminird", "atmel,at91sam9g25", "atmel,at91sam9x5", "atmel,at91sam9";
+
+	clocks {
+		slow_xtal {
+			clock-frequency = <32768>;
+		};
+		adc_op_clk {
+			status = "okay";
+		};
+	};
+
+	ahb {
+		apb {
+			pinctrl@fffff400 {
+				adc0 {
+					pinctrl_adc0_ad5: adc0_ad5-0 {
+							/* pull-up disable */
+							atmel,pins = <AT91_PIOB 16 AT91_PERIPH_GPIO AT91_PINCTRL_NONE>;
+						};
+				};
+			};
+
+			adc0: adc@f804c000 {
+				atmel,adc-vref = <2500>;
+				pinctrl-names = "default";
+				pinctrl-0 = <&pinctrl_adc0_ad5>;
+				atmel,adc-channels-used = <0x0020>;
+				status = "okay";
+			};
+		};
+	};
+};
+
+&usart0 {
+	status = "disabled";
+};
+
+&rtc0 {
+	status = "okay";
+};
+
+&leds {
+	blue {
+		status = "okay";
+	};
+};
+

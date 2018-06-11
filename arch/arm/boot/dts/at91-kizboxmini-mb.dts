@@ -1,0 +1,38 @@
+// SPDX-License-Identifier: GPL-2.0
+/*
+ * Copyright (C) 2015-2018 Overkiz SAS
+ *   Author: Mickael Gardet <m.gardet@overkiz.com>
+ *           Kévin Raymond <k.raymond@overkiz.com>
+ */
+/dts-v1/;
+#include "at91-kizboxmini_common.dtsi"
+
+/ {
+	model = "Overkiz Kizbox Mini Mother Board";
+	compatible = "overkiz,kizboxminimb", "atmel,at91sam9g25", "atmel,at91sam9x5", "atmel,at91sam9";
+
+
+	clocks {
+		slow_xtal {
+			clock-frequency = <32768>;
+		};
+	};
+
+	pwm_leds {
+		blue {
+			label = "pwm:blue:user";
+			pwms = <&pwm0 2 10000000 0>;
+			max-brightness = <255>;
+			linux,default-trigger = "none";
+		};
+	};
+};
+
+&usb0 {
+	num-ports = <2>;
+};
+
+&rtc0 {
+	status = "okay";
+};
+
