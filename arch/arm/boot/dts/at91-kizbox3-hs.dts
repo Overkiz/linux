@@ -312,5 +312,29 @@
 		};
 	};
 
+	sx1243 {
+		compatible = "maxim,sx1243";
+		pinctrl-names = "default";
+		pinctrl-0 = <
+				&pinctrl_sx1243_tx
+				&pinctrl_sx1243_cs
+				&pinctrl_sx1243_en>;
+		status = "okay";
+
+		tx-gpios = <&pioABCD PIN_PB6 GPIO_ACTIVE_HIGH>; // DATA
+		cs-gpios = <&pioABCD PIN_PB18 GPIO_ACTIVE_HIGH>; // CTRL
+		en-gpios = <&pioABCD PIN_PB17 GPIO_ACTIVE_HIGH>; // N_RESET
+
+		freq0 {
+			frequency = <433420000>;
+			sel-gpio-values = <1>;
+		};
+
+		freq1 {
+			frequency = <433920000>;
+			sel-gpio-values = <0>;
+		};
+	};
+
 };
 
