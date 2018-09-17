@@ -59,7 +59,7 @@
 
 	ahb {
 		usb0: gadget@00300000 {
-			atmel,vbus-gpio = <&pioA PIN_PD20 GPIO_ACTIVE_HIGH>;
+			atmel,vbus-gpio = <&pioABCD PIN_PD20 GPIO_ACTIVE_HIGH>;
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_usba_vbus>;
 			status = "okay";
@@ -67,8 +67,8 @@
 
 		usb1: ohci@00400000 {
 			num-ports = <3>;
-			atmel,vbus-gpio = <0 /* &pioA PIN_PD20 GPIO_ACTIVE_HIGH */
-					   &pioA PIN_PA27 GPIO_ACTIVE_HIGH
+			atmel,vbus-gpio = <0 /* &pioABCD PIN_PD20 GPIO_ACTIVE_HIGH */
+					   &pioABCD PIN_PA27 GPIO_ACTIVE_HIGH
 					   0
 					  >;
 			pinctrl-names = "default";
@@ -510,7 +510,7 @@
 
 		pb4 {
 			label = "USER";
-			gpios = <&pioA PIN_PA29 GPIO_ACTIVE_LOW>;
+			gpios = <&pioABCD PIN_PA29 GPIO_ACTIVE_LOW>;
 			linux,code = <0x104>;
 		};
 	};
@@ -523,17 +523,17 @@
 
 		red {
 			label = "red";
-			gpios = <&pioA PIN_PA10 GPIO_ACTIVE_HIGH>;
+			gpios = <&pioABCD PIN_PA10 GPIO_ACTIVE_HIGH>;
 		};
 
 		green {
 			label = "green";
-			gpios = <&pioA PIN_PB1 GPIO_ACTIVE_HIGH>;
+			gpios = <&pioABCD PIN_PB1 GPIO_ACTIVE_HIGH>;
 		};
 
 		blue {
 			label = "blue";
-			gpios = <&pioA PIN_PA31 GPIO_ACTIVE_HIGH>;
+			gpios = <&pioABCD PIN_PA31 GPIO_ACTIVE_HIGH>;
 			linux,default-trigger = "heartbeat";
 		};
 	};

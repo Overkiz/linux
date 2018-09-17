@@ -43,7 +43,7 @@ Example:
 
 ...
 {
-	pioA: pinctrl@fc038000 {
+	pioABCD: pinctrl@fc038000 {
 		compatible = "atmel,sama5d2-pinctrl";
 		reg = <0xfc038000 0x600>;
 		interrupts = <18 IRQ_TYPE_LEVEL_HIGH 7>,
@@ -54,7 +54,7 @@ Example:
 		#interrupt-cells = <2>;
 		gpio-controller;
 		#gpio-cells = <2>;
-		clocks = <&pioA_clk>;
+		clocks = <&pioABCD_clk>;
 
 		pinctrl_i2c0_default: i2c0_default {
 			pinmux = <PIN_PD21__TWD0>,

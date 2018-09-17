@@ -661,7 +661,7 @@
 						reg = <17>;
 					};
 
-					pioA_clk: pioA_clk {
+					pioABCD_clk: pioABCD_clk {
 						#clock-cells = <0>;
 						reg = <18>;
 						atmel,clk-output-range = <0 83000000>;
@@ -1434,7 +1434,7 @@
 				status = "disabled";
 			};
 
-			pioA: pinctrl@fc038000 {
+			pioABCD: pinctrl@fc038000 {
 				compatible = "atmel,sama5d2-pinctrl";
 				reg = <0xfc038000 0x600>;
 				interrupts = <18 IRQ_TYPE_LEVEL_HIGH 7>,
@@ -1445,7 +1445,7 @@
 				#interrupt-cells = <2>;
 				gpio-controller;
 				#gpio-cells = <2>;
-				clocks = <&pioA_clk>;
+				clocks = <&pioABCD_clk>;
 			};
 
 			secumod@fc040000 {
