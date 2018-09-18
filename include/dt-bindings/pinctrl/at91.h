@@ -38,5 +38,8 @@
 #define AT91_PERIPH_B		2
 #define AT91_PERIPH_C		3
 #define AT91_PERIPH_D		4
+#define AT91_PERIPH_E		5
+#define AT91_PERIPH_F		6
+#define AT91_PERIPH_G		7
 
 #endif /* __DT_BINDINGS_AT91_PINCTRL_H__ */
