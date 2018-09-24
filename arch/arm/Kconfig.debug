@@ -138,6 +138,14 @@ choice
 		  Say Y here if you want kernel low-level debugging support
 		  on the UART1 port of sama5d2.
 
+	config DEBUG_AT91_SAMA5D2_UART4
+		bool "Kernel low-level debugging on SAMA5D2 UART4"
+		select DEBUG_AT91_UART
+		depends on SOC_SAMA5D2
+		help
+		  Say Y here if you want kernel low-level debugging support
+		  on the UART4 port of sama5d2.
+
 	config DEBUG_AT91_SAMA5D4_USART3
 		bool "Kernel low-level debugging on SAMA5D4 USART3"
 		select DEBUG_AT91_UART
@@ -1577,6 +1585,7 @@ config DEBUG_UART_PHYS
 	default 0xf1012100 if DEBUG_MVEBU_UART1_ALTERNATE
 	default 0xf7fc9000 if DEBUG_BERLIN_UART
 	default 0xf8020000 if DEBUG_AT91_SAMA5D2_UART1
+	default 0xfc00c000 if DEBUG_AT91_SAMA5D2_UART4
 	default 0xf8b00000 if DEBUG_HIX5HD2_UART
 	default 0xf991e000 if DEBUG_QCOM_UARTDM
 	default 0xfc00c000 if DEBUG_AT91_SAMA5D4_USART3
@@ -1648,6 +1657,7 @@ config DEBUG_UART_VIRT
 	default 0xf7008000 if DEBUG_S3C24XX_UART && (DEBUG_S3C_UART2 || \
 				DEBUG_S3C2410_UART2)
 	default 0xf7020000 if DEBUG_AT91_SAMA5D2_UART1
+	default 0xfb00c000 if DEBUG_AT91_SAMA5D2_UART4
 	default 0xf7fc9000 if DEBUG_BERLIN_UART
 	default 0xf8007000 if DEBUG_HIP04_UART
 	default 0xf8009000 if DEBUG_VEXPRESS_UART0_CA9
