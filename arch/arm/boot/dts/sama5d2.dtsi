@@ -1208,7 +1208,7 @@
 				compatible = "atmel,sama5d2-pwm";
 				reg = <0xf802c000 0x4000>;
 				interrupts = <38 IRQ_TYPE_LEVEL_HIGH 7>;
-				#pwm-cells = <3>;
+				#pwm-cells = <2>;
 				clocks = <&pwm_clk>;
 			};
 
