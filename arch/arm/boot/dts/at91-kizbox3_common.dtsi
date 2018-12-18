@@ -243,6 +243,10 @@
 				};
 			};
 
+			securam: sram@f8044000 {
+				export;
+			};
+
 			pwm0: pwm@f802c000 {
 				status = "okay";
 			};
