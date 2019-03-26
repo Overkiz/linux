@@ -525,6 +525,16 @@ config AT91_KBOOT
 
 	  If unsure, say N.
 
+config AT91_UBOOT
+	bool "U-Boot SYSFS Interface implementation for AT91"
+	depends on OF
+	help
+	  Say Y if you have U-Boot and you want to communicate the boot mode.
+	  AT91 implementation uses a GPBR register to read version and
+	  save the boot mode.
+
+	  If unsure, say N.
+
 source "drivers/misc/c2port/Kconfig"
 source "drivers/misc/eeprom/Kconfig"
 source "drivers/misc/cb710/Kconfig"
