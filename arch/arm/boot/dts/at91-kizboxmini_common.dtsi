@@ -33,6 +33,8 @@
 	ahb {
 		apb {
 			usart0: serial@f801c000 {
+				atmel,use-dma-rx;
+				atmel,use-dma-tx;
 				status = "okay";
 			};
 
