@@ -92,14 +92,20 @@
 			};
 
 			usart0: serial@f001c000 {
+				atmel,use-dma-rx;
+				atmel,use-dma-tx;
 				status = "disabled";
 			};
 
 			usart1: serial@f0020000 {
+				atmel,use-dma-rx;
+				atmel,use-dma-tx;
 				status = "disabled";
 			};
 
 			usart2: serial@f8020000 {
+				atmel,use-dma-rx;
+				atmel,use-dma-tx;
 				status = "disabled";
 			};
 
