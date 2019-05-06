@@ -61,6 +61,11 @@
 			regulator-always-on;
 	};
 
+	uuid: uuid@f803004c {
+		compatible = "overkiz,at91-uuid";
+		reg = <0xf803004c 0x8>;
+	};
+
 	uboot: uboot@f8045400 {
 			compatible = "overkiz,at91-uboot";
 			reg = <0xf8045400 0x10>;

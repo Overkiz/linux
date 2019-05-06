@@ -58,6 +58,7 @@ obj-$(CONFIG_ASPEED_LPC_SNOOP)	+= aspeed-lpc-snoop.o
 obj-$(CONFIG_PCI_ENDPOINT_TEST)	+= pci_endpoint_test.o
 obj-$(CONFIG_AT91_KBOOT)	+= at91-kboot.o
 obj-$(CONFIG_AT91_UBOOT)	+= at91-uboot.o
+obj-$(CONFIG_SOC_SAMA5D2)	+= at91-uuid.o
 
 lkdtm-$(CONFIG_LKDTM)		+= lkdtm_core.o
 lkdtm-$(CONFIG_LKDTM)		+= lkdtm_bugs.o
