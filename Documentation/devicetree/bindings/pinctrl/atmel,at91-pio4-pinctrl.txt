@@ -45,7 +45,7 @@ Example:
 {
 	pioABCD: pinctrl@fc038000 {
 		compatible = "atmel,sama5d2-pinctrl";
-		reg = <0xfc038000 0x600>;
+		reg = <0xfc038000 0x15e8>;
 		interrupts = <18 IRQ_TYPE_LEVEL_HIGH 7>,
 			     <68 IRQ_TYPE_LEVEL_HIGH 7>,
 			     <69 IRQ_TYPE_LEVEL_HIGH 7>,
